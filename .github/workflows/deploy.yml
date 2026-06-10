@@ -13,7 +13,16 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v3
 
-      - name: Deploy na EC2
+      - name: Copia arquivos para EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          source: "index.html,Dockerfile"
+          target: "/home/ubuntu/app"
+
+      - name: Build e Deploy na EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EC2_HOST }}
